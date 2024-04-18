@@ -16,8 +16,8 @@
       "type": "parameter",
       "description": "The target framework for the project",
       "datatype": "text",
-      "defaultValue": "net35",
-      "replaces": "net35"
+      "replaces": "net35",
+      "defaultValue": "net46"
     },
     "Description": {
       "type": "parameter",
@@ -31,7 +31,7 @@
       "description": "Unity version to use when developing the plugin",
       "datatype": "text",
       "replaces": "5.6.0",
-      "defaultValue": "5.6.0"
+      "defaultValue": "2019.4.40"
     },
     "Version": {
       "type": "parameter",
