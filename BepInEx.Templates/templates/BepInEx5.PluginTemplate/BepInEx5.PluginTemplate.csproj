@@ -15,14 +15,33 @@
     <RootNamespace>BepInEx5.PluginTemplate</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<DebugType>Full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+	<DebugType>None</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+	<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
     <PackageReference Include="UnityEngine.Modules" Version="5.6.0" IncludeAssets="compile" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
+
+  <ItemGroup>
+	<Reference Include="Assembly-CSharp" Publicize="True">
+	  <HintPath>..\libs\Assembly-CSharp.dll</HintPath>
+	  <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Exec Command="if $(Configuration) == Release (&quot;../PackageForThunderstore.py&quot; -n $(AssemblyName) -v $(PackageVersion) -o $(Outdir)) else (call ../CopyToDebug.bat $(OutDir) $(AssemblyName) &quot;C:\Program Files (x86)\Steam\steamapps\common\Bopl Battle Debug\BepInEx\plugins\Debugging&quot;)" />
+  </Target>
 </Project>
